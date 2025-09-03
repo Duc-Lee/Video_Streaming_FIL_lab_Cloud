@@ -1,0 +1,19 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: measure-streaming
+  namespace: default
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/window: 100s
+        autoscaling.knative.dev/min-scale: '1'
+        autoscaling.knative.dev/max-scale: '1'
+    spec:
+      containers:
+      - image: docker.io/lazyken/measure-streaming:v1@sha256:3edd67c01b0326fbd9a194d60899cc7f88b888466393d68f9bb1b169dae1a1ff
+        ports:
+        - containerPort: 5000
+      nodeSelector:
+        kubernetes.io/hostname: cloud-node

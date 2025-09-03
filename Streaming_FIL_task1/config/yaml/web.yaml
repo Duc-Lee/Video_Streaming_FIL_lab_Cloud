@@ -1,0 +1,19 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: measure-web
+  namespace: serverless
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/window: 100s
+        autoscaling.knative.dev/min-scale: '1'
+        autoscaling.knative.dev/max-scale: '1'
+    spec:
+      containers:
+      - image: docker.io/tienshawn/measure-web:fix-sigterm-1.0@sha256:f66498589b9dbcba892405a997094997864561f52003d0999d8ad5dc572ec0d4
+        ports:
+        - containerPort: 5000
+      nodeSelector:
+        kubernetes.io/hostname: cloud-node
